@@ -15,10 +15,10 @@ gen-proto:
 		--proto_path proto \
 		--proto_path . \
 		proto/cvcio/**/*.proto \
-			--go_out=Mtransformer/annotations.proto=github.com/bold-commerce/protoc-gen-struct-transformer/options:internal --go_opt paths=source_relative \
-			--struct-transformer_out=package=transformer,goimports=false:internal \
-			--go-grpc_out=:internal --go-grpc_opt paths=source_relative \
-			--grpc-gateway_out=:internal --grpc-gateway_opt paths=source_relative \
+			--go_out=Mtransformer/annotations.proto=github.com/bold-commerce/protoc-gen-struct-transformer/options:. --go_opt paths=source_relative \
+			--struct-transformer_out=package=transformer,goimports=false:. \
+			--go-grpc_out=:. --go-grpc_opt paths=source_relative \
+			--grpc-gateway_out=:. --grpc-gateway_opt paths=source_relative \
 			--openapiv2_out=:swagger
 
 gen-paths:

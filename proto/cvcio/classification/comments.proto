@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package classification;
-option go_package = "github.com/cvcio/proto/internal/cvcio/clsasification";
+option go_package = "github.com/cvcio/proto/cvcio/clsasification";
 
 import "google/api/annotations.proto";
 
