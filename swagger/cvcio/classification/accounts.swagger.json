@@ -1,0 +1,188 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "cvcio/classification/accounts.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AccountService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v3/accounts/twitter": {
+      "post": {
+        "operationId": "AccountService_DetectTwitterAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/classificationResponseAccount"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/classificationTwitterAccount"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "classificationResponseAccount": {
+      "type": "object",
+      "properties": {
+        "predictions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/commonPrediction"
+          }
+        }
+      }
+    },
+    "classificationTwitterAccount": {
+      "type": "object",
+      "properties": {
+        "followers": {
+          "type": "string",
+          "format": "int64"
+        },
+        "friends": {
+          "type": "string",
+          "format": "int64"
+        },
+        "statuses": {
+          "type": "string",
+          "format": "int64"
+        },
+        "favorites": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lists": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ffr": {
+          "type": "number",
+          "format": "double"
+        },
+        "stfv": {
+          "type": "number",
+          "format": "double"
+        },
+        "fstfv": {
+          "type": "number",
+          "format": "double"
+        },
+        "dates": {
+          "type": "number",
+          "format": "double"
+        },
+        "actions": {
+          "type": "number",
+          "format": "double"
+        },
+        "meta": {
+          "$ref": "#/definitions/commonMeta"
+        }
+      }
+    },
+    "commonMeta": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "screenName": {
+          "type": "string"
+        },
+        "commentCreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "userCreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "classifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "commonPrediction": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        },
+        "prediction": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

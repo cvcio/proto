@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package classification;
+option go_package = "github.com/cvcio/proto/internal/clsasification";
+
+import "google/api/annotations.proto";
+
+import "cvcio/common/meta.proto";
+import "cvcio/common/predictions.proto";
+
+enum CommentClass {
+    ROLE_HATE = 0;
+    ROLE_ETHNIC_IDENTITY_ATTACK = 1;
+    ROLE_INSULT = 2;
+    ROLE_LAW_AND_ORDER = 3;
+    ROLE_NATIONALISM = 4;
+    ROLE_GENDER_IDENTITY_ATTACK = 5;
+    ROLE_THREAT = 6;
+}
+
+message Comment {
+    string text = 1;
+    common.Meta meta = 2;
+}
+
+message ResponseToxic {
+    repeated common.Prediction predictions = 1;
+}
+
+service CommentService {
+    rpc DetectToxic (Comment) returns (ResponseToxic) {
+        option (google.api.http) = {
+            post : "/v3/comments/toxicity"
+            body : "*"
+        };
+    };
+};

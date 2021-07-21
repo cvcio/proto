@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package classification;
+option go_package = "github.com/cvcio/proto/internal/clsasification";
+
+import "google/api/annotations.proto";
+
+import "cvcio/common/meta.proto";
+import "cvcio/common/predictions.proto";
+
+enum AccountClass {
+    ROLE_UNKNOWN = 0;
+    ROLE_ACTIVE = 1;
+    ROLE_INFLUENCER = 2;
+    ROLE_NEW = 3;
+    ROLE_AMPLIFIER = 4;
+}
+
+message TwitterAccount {
+    int64 followers = 1;
+    int64 friends = 2;
+    int64 statuses = 3;
+    int64 favorites = 4;
+    int64 lists = 5;
+    double ffr = 6;
+    double stfv = 7;
+    double fstfv = 8;
+    double dates = 9;
+    double actions = 10;
+    common.Meta meta = 11;
+}
+
+message ResponseAccount {
+    repeated common.Prediction predictions = 1;
+}
+
+service AccountService {
+    rpc DetectTwitterAccount (TwitterAccount) returns (ResponseAccount) {
+        option (google.api.http) = {
+            post : "/v3/accounts/twitter"
+            body : "*"
+        };
+    };
+};
