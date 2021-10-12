@@ -14,4 +14,5 @@ message Meta {
     google.protobuf.Timestamp user_created_at = 5 [(tagger.tags) = "json:\"user_created_at,omitempty\"" ];
     google.protobuf.Timestamp classified_at = 6 [(tagger.tags) = "json:\"classified_at,omitempty\"" ];
     string link = 7;
+    string lang = 8;
 }

@@ -2,11 +2,11 @@
 // source: cvcio/classification/comments.proto
 
 /*
-Package clsasification is a reverse proxy.
+Package classification is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package clsasification
+package classification
 
 import (
 	"context"
