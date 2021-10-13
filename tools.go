@@ -1,4 +1,4 @@
-// +build tools
+// +build tools linux darwin windows
 
 package tools
 

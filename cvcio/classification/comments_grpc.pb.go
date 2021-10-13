@@ -18,7 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommentServiceClient interface {
-	DetectToxic(ctx context.Context, in *Comment, opts ...grpc.CallOption) (*ResponseToxic, error)
+	ClassifyToxic(ctx context.Context, in *Comment, opts ...grpc.CallOption) (*ResponseToxic, error)
+	ClassifyToxicList(ctx context.Context, in *CommentList, opts ...grpc.CallOption) (*ResponseToxicList, error)
 }
 
 type commentServiceClient struct {
@@ -29,9 +30,18 @@ func NewCommentServiceClient(cc grpc.ClientConnInterface) CommentServiceClient {
 	return &commentServiceClient{cc}
 }
 
-func (c *commentServiceClient) DetectToxic(ctx context.Context, in *Comment, opts ...grpc.CallOption) (*ResponseToxic, error) {
+func (c *commentServiceClient) ClassifyToxic(ctx context.Context, in *Comment, opts ...grpc.CallOption) (*ResponseToxic, error) {
 	out := new(ResponseToxic)
-	err := c.cc.Invoke(ctx, "/classification.CommentService/DetectToxic", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/classification.CommentService/ClassifyToxic", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commentServiceClient) ClassifyToxicList(ctx context.Context, in *CommentList, opts ...grpc.CallOption) (*ResponseToxicList, error) {
+	out := new(ResponseToxicList)
+	err := c.cc.Invoke(ctx, "/classification.CommentService/ClassifyToxicList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +52,8 @@ func (c *commentServiceClient) DetectToxic(ctx context.Context, in *Comment, opt
 // All implementations must embed UnimplementedCommentServiceServer
 // for forward compatibility
 type CommentServiceServer interface {
-	DetectToxic(context.Context, *Comment) (*ResponseToxic, error)
+	ClassifyToxic(context.Context, *Comment) (*ResponseToxic, error)
+	ClassifyToxicList(context.Context, *CommentList) (*ResponseToxicList, error)
 	mustEmbedUnimplementedCommentServiceServer()
 }
 
@@ -50,8 +61,11 @@ type CommentServiceServer interface {
 type UnimplementedCommentServiceServer struct {
 }
 
-func (UnimplementedCommentServiceServer) DetectToxic(context.Context, *Comment) (*ResponseToxic, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DetectToxic not implemented")
+func (UnimplementedCommentServiceServer) ClassifyToxic(context.Context, *Comment) (*ResponseToxic, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClassifyToxic not implemented")
+}
+func (UnimplementedCommentServiceServer) ClassifyToxicList(context.Context, *CommentList) (*ResponseToxicList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClassifyToxicList not implemented")
 }
 func (UnimplementedCommentServiceServer) mustEmbedUnimplementedCommentServiceServer() {}
 
@@ -66,20 +80,38 @@ func RegisterCommentServiceServer(s grpc.ServiceRegistrar, srv CommentServiceSer
 	s.RegisterService(&CommentService_ServiceDesc, srv)
 }
 
-func _CommentService_DetectToxic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CommentService_ClassifyToxic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Comment)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CommentServiceServer).DetectToxic(ctx, in)
+		return srv.(CommentServiceServer).ClassifyToxic(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/classification.CommentService/DetectToxic",
+		FullMethod: "/classification.CommentService/ClassifyToxic",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CommentServiceServer).DetectToxic(ctx, req.(*Comment))
+		return srv.(CommentServiceServer).ClassifyToxic(ctx, req.(*Comment))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CommentService_ClassifyToxicList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentList)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommentServiceServer).ClassifyToxicList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/classification.CommentService/ClassifyToxicList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommentServiceServer).ClassifyToxicList(ctx, req.(*CommentList))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +124,12 @@ var CommentService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CommentServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "DetectToxic",
-			Handler:    _CommentService_DetectToxic_Handler,
+			MethodName: "ClassifyToxic",
+			Handler:    _CommentService_ClassifyToxic_Handler,
+		},
+		{
+			MethodName: "ClassifyToxicList",
+			Handler:    _CommentService_ClassifyToxicList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -18,7 +18,12 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountServiceClient interface {
-	DetectTwitterAccount(ctx context.Context, in *TwitterAccount, opts ...grpc.CallOption) (*ResponseAccount, error)
+	// ClassifyTwitterAccount classifies a single TwitterAccount
+	// returns a ResponseAccount message
+	ClassifyTwitterAccount(ctx context.Context, in *TwitterAccount, opts ...grpc.CallOption) (*ResponseAccount, error)
+	// ClassifyTwitterAccount classifies a list of TwitterAccount messages (TwitterAccountList)
+	// returns a list of ResponseAccount messages (ResponseAccountList)
+	ClassifyTwitterAccounts(ctx context.Context, in *TwitterAccountList, opts ...grpc.CallOption) (*ResponseAccountList, error)
 }
 
 type accountServiceClient struct {
@@ -29,9 +34,18 @@ func NewAccountServiceClient(cc grpc.ClientConnInterface) AccountServiceClient {
 	return &accountServiceClient{cc}
 }
 
-func (c *accountServiceClient) DetectTwitterAccount(ctx context.Context, in *TwitterAccount, opts ...grpc.CallOption) (*ResponseAccount, error) {
+func (c *accountServiceClient) ClassifyTwitterAccount(ctx context.Context, in *TwitterAccount, opts ...grpc.CallOption) (*ResponseAccount, error) {
 	out := new(ResponseAccount)
-	err := c.cc.Invoke(ctx, "/classification.AccountService/DetectTwitterAccount", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/classification.AccountService/ClassifyTwitterAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) ClassifyTwitterAccounts(ctx context.Context, in *TwitterAccountList, opts ...grpc.CallOption) (*ResponseAccountList, error) {
+	out := new(ResponseAccountList)
+	err := c.cc.Invoke(ctx, "/classification.AccountService/ClassifyTwitterAccounts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +56,12 @@ func (c *accountServiceClient) DetectTwitterAccount(ctx context.Context, in *Twi
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility
 type AccountServiceServer interface {
-	DetectTwitterAccount(context.Context, *TwitterAccount) (*ResponseAccount, error)
+	// ClassifyTwitterAccount classifies a single TwitterAccount
+	// returns a ResponseAccount message
+	ClassifyTwitterAccount(context.Context, *TwitterAccount) (*ResponseAccount, error)
+	// ClassifyTwitterAccount classifies a list of TwitterAccount messages (TwitterAccountList)
+	// returns a list of ResponseAccount messages (ResponseAccountList)
+	ClassifyTwitterAccounts(context.Context, *TwitterAccountList) (*ResponseAccountList, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -50,8 +69,11 @@ type AccountServiceServer interface {
 type UnimplementedAccountServiceServer struct {
 }
 
-func (UnimplementedAccountServiceServer) DetectTwitterAccount(context.Context, *TwitterAccount) (*ResponseAccount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DetectTwitterAccount not implemented")
+func (UnimplementedAccountServiceServer) ClassifyTwitterAccount(context.Context, *TwitterAccount) (*ResponseAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClassifyTwitterAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) ClassifyTwitterAccounts(context.Context, *TwitterAccountList) (*ResponseAccountList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClassifyTwitterAccounts not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 
@@ -66,20 +88,38 @@ func RegisterAccountServiceServer(s grpc.ServiceRegistrar, srv AccountServiceSer
 	s.RegisterService(&AccountService_ServiceDesc, srv)
 }
 
-func _AccountService_DetectTwitterAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AccountService_ClassifyTwitterAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TwitterAccount)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServiceServer).DetectTwitterAccount(ctx, in)
+		return srv.(AccountServiceServer).ClassifyTwitterAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/classification.AccountService/DetectTwitterAccount",
+		FullMethod: "/classification.AccountService/ClassifyTwitterAccount",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).DetectTwitterAccount(ctx, req.(*TwitterAccount))
+		return srv.(AccountServiceServer).ClassifyTwitterAccount(ctx, req.(*TwitterAccount))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_ClassifyTwitterAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TwitterAccountList)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).ClassifyTwitterAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/classification.AccountService/ClassifyTwitterAccounts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).ClassifyTwitterAccounts(ctx, req.(*TwitterAccountList))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +132,12 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AccountServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "DetectTwitterAccount",
-			Handler:    _AccountService_DetectTwitterAccount_Handler,
+			MethodName: "ClassifyTwitterAccount",
+			Handler:    _AccountService_ClassifyTwitterAccount_Handler,
+		},
+		{
+			MethodName: "ClassifyTwitterAccounts",
+			Handler:    _AccountService_ClassifyTwitterAccounts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package classification;
+
+// golang options
 option go_package = "github.com/cvcio/proto/cvcio/classification";
 
 import "google/api/annotations.proto";
@@ -8,14 +10,32 @@ import "google/api/annotations.proto";
 import "cvcio/common/meta.proto";
 import "cvcio/common/predictions.proto";
 
-enum AccountClass {
-    ROLE_UNKNOWN = 0;
-    ROLE_ACTIVE = 1;
-    ROLE_INFLUENCER = 2;
-    ROLE_NEW = 3;
-    ROLE_AMPLIFIER = 4;
-}
+/**
+TwitterAccount message holds information of the requested account
 
+Required Fields
+
+    - followers (int64) as provided by Twitter API
+    - friends (int64) as provided by Twitter API
+    - statuses (int64) as provided by Twitter API
+    - lists (int64) as provided by Twitter API
+
+Optional Fields
+
+If optional fields missing we will try to calculate the values if available
+In case of missing favorites (count) we will use the v2 account classifier
+
+    - favorites (int64) as provided by Twitter API
+    - ffr (double) calculated as: followers / firends
+    - stfv (double) calculated as: statuses / favorites
+    - stf (double) calculated as: statuses / favorites
+    - fvfr (double) calculated as: favorites / firends
+    - fl (double) calculated as: followers / lists
+    - dates (double) calculated as: followers / firends
+    - actions (double) calculated as: (statuses + favorites) / dates
+
+Meta: Meta message (see proto/cvcio/common/meta)
+**/
 message TwitterAccount {
     int64 followers = 1;
     int64 friends = 2;
@@ -24,20 +44,41 @@ message TwitterAccount {
     int64 lists = 5;
     double ffr = 6;
     double stfv = 7;
-    double fstfv = 8;
-    double dates = 9;
-    double actions = 10;
-    common.Meta meta = 11;
+    double stf = 8;
+    double fvfr = 9;
+    double fl = 10;
+    double dates = 11;
+    double actions = 12;
+    common.Meta meta = 13;
 }
-
+// TwitterAccountList, a list of TwitterAccount messages {accounts: [...]}
+message TwitterAccountList {
+    repeated TwitterAccount accounts = 1;
+}
+// ResponseAccount 
 message ResponseAccount {
     repeated common.Prediction predictions = 1;
 }
+// ResponseAccountList, a list of ResponseAccount messages {accounts: [...]}
+message ResponseAccountList {
+    repeated ResponseAccount accounts = 1;
+}
 
+// AccountService Microservice
 service AccountService {
-    rpc DetectTwitterAccount (TwitterAccount) returns (ResponseAccount) {
+    // ClassifyTwitterAccount classifies a single TwitterAccount 
+    // returns a ResponseAccount message
+    rpc ClassifyTwitterAccount (TwitterAccount) returns (ResponseAccount) {
         option (google.api.http) = {
-            post : "/v3/accounts/twitter"
+            post : "/v3/classify/account/twitter"
+            body : "*"
+        };
+    };
+    // ClassifyTwitterAccount classifies a list of TwitterAccount messages (TwitterAccountList)
+    // returns a list of ResponseAccount messages (ResponseAccountList)
+    rpc ClassifyTwitterAccounts (TwitterAccountList) returns (ResponseAccountList) {
+        option (google.api.http) = {
+            post : "/v3/classify/accounts/twitter"
             body : "*"
         };
     };
