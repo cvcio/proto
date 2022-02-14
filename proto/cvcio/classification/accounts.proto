@@ -3,12 +3,12 @@ syntax = "proto3";
 package classification;
 
 // golang options
-option go_package = "github.com/cvcio/proto/cvcio/classification";
+option go_package = "github.com/cvcio/proto/internal/classification";
 
 import "google/api/annotations.proto";
 
-import "cvcio/common/meta.proto";
-import "cvcio/common/predictions.proto";
+import "proto/cvcio/classification/meta.proto";
+import "proto/cvcio/classification/predictions.proto";
 
 /**
 TwitterAccount message holds information of the requested account

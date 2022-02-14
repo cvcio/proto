@@ -1,0 +1,648 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/cvcio/mediawatch/feeds/feed.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FeedService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v3/feeds/create": {
+      "post": {
+        "summary": "Create new feed",
+        "operationId": "FeedService_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchFeed"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/mediawatchFeed"
+            }
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/delete/{id}": {
+      "delete": {
+        "summary": "Delete feed by id",
+        "operationId": "FeedService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchResponseWithMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/get/{id}": {
+      "get": {
+        "summary": "Get feed by id",
+        "operationId": "FeedService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchFeed"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/list": {
+      "get": {
+        "summary": "List feeds by query",
+        "operationId": "FeedService_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchFeedtList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/test/{id}": {
+      "put": {
+        "summary": "Test feed scraper by id",
+        "operationId": "FeedService_Test",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchResponseWithMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/update-with-fields/{id}": {
+      "put": {
+        "summary": "Update feed with fields",
+        "operationId": "FeedService_UpdateWithFields",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchResponseWithMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "meta": {
+                  "type": "object"
+                }
+              },
+              "title": "FeedWithFields Model"
+            }
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    },
+    "/v3/feeds/update/{id}": {
+      "put": {
+        "summary": "Update feed",
+        "operationId": "FeedService_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/mediawatchResponseWithMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique increment id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "title": "unique uuid"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "title": "feed created at"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "title": "feed updated at"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "name of the feed (formatted)"
+                },
+                "userName": {
+                  "type": "string",
+                  "title": "twitter handle name"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "twitter description (auto pulled), or user defined"
+                },
+                "twitterId": {
+                  "type": "string",
+                  "title": "twitter user id (str on v2, int64 -\u003e str on v1)"
+                },
+                "icon": {
+                  "type": "string",
+                  "title": "twitter profile image"
+                },
+                "url": {
+                  "type": "string",
+                  "title": "feed base url (including trailing slash [/])"
+                },
+                "stream": {
+                  "$ref": "#/definitions/mediawatchStream",
+                  "title": "stream specific fields"
+                },
+                "meta": {
+                  "$ref": "#/definitions/mediawatchFeedMeta",
+                  "title": "meta fields"
+                }
+              },
+              "title": "Feed Model"
+            }
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FeedMetaBusinessType": {
+      "type": "string",
+      "enum": [
+        "BUSINESS_TYPE_UNKNOWN",
+        "BUSINESS_TYPE_OTHER",
+        "BUSINESS_TYPE_AGENCY",
+        "BUSINESS_TYPE_ORGANIZATION",
+        "BUSINESS_TYPE_BLOG",
+        "BUSINESS_TYPE_PORTAL"
+      ],
+      "default": "BUSINESS_TYPE_UNKNOWN",
+      "title": "BusinessType Enumeration"
+    },
+    "FeedMetaContentType": {
+      "type": "string",
+      "enum": [
+        "CONTENT_TYPE_UNKNOWN",
+        "CONTENT_TYPE_OTHER",
+        "CONTENT_TYPE_NEWS",
+        "CONTENT_TYPE_MARKET_BUSINESS",
+        "CONTENT_TYPE_DEFENCE_ARMY_POLICE",
+        "CONTENT_TYPE_ENTERTAINMENT",
+        "CONTENT_TYPE_HEALTH_BEAUTY",
+        "CONTENT_TYPE_SPORTS",
+        "CONTENT_TYPE_RELIGION",
+        "CONTENT_TYPE_MIXED"
+      ],
+      "default": "CONTENT_TYPE_UNKNOWN",
+      "title": "ContentType Enumeration"
+    },
+    "FeedMetaLocality": {
+      "type": "string",
+      "enum": [
+        "LOCALITY_UNKNOWN",
+        "LOCALITY_OTHER",
+        "LOCALITY_LOCAL",
+        "LOCALITY_NATIONAL",
+        "LOCALITY_INTERNATIONAL",
+        "LOCALITY_MIXED"
+      ],
+      "default": "LOCALITY_UNKNOWN",
+      "title": "Locality Enumeration"
+    },
+    "FeedMetaPoliticalOrientation": {
+      "type": "string",
+      "enum": [
+        "POLITICAL_ORIENTATION_UNKNOWN",
+        "POLITICAL_ORIENTATION_OTHER",
+        "POLITICAL_ORIENTATION_LEFT",
+        "POLITICAL_ORIENTATION_CENTER_LEFT",
+        "POLITICAL_ORIENTATION_CENTER",
+        "POLITICAL_ORIENTATION_CENTER_RIGHT",
+        "POLITICAL_ORIENTATION_RIGHT",
+        "POLITICAL_ORIENTATION_FAR_RIGHT"
+      ],
+      "default": "POLITICAL_ORIENTATION_UNKNOWN",
+      "title": "PoliticalOrientation Enumeration"
+    },
+    "FeedMetaPoliticalStance": {
+      "type": "string",
+      "enum": [
+        "POLITICAL_STANCE_UNKNOWN",
+        "POLITICAL_STANCE_OTHER",
+        "POLITICAL_STANCE_PRO_ESTABLISHMENT",
+        "POLITICAL_STANCE_NEUTERAL",
+        "POLITICAL_STANCE_AGAINST_ESTABLISHMENT"
+      ],
+      "default": "POLITICAL_STANCE_UNKNOWN",
+      "title": "PoliticalStance Enumeration"
+    },
+    "FeedMetaTier": {
+      "type": "string",
+      "enum": [
+        "TIER_UNKNOWN",
+        "TIER_OTHER",
+        "TIER_TRADITIONAL",
+        "TIER_DIGITAL",
+        "TIER_BROADCASTING_TV",
+        "TIER_BROADCASTING_RADIO",
+        "TIER_MIXED"
+      ],
+      "default": "TIER_UNKNOWN",
+      "title": "Tier Enumeration"
+    },
+    "StreamStreamType": {
+      "type": "string",
+      "enum": [
+        "STREAM_TYPE_UNKNOWN",
+        "STREAM_TYPE_OTHER",
+        "STREAM_TYPE_TWITTER",
+        "STREAM_TYPE_RSS"
+      ],
+      "default": "STREAM_TYPE_UNKNOWN",
+      "title": "StreamType Enumeration"
+    },
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "mediawatchFeed": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "unique increment id"
+        },
+        "uuid": {
+          "type": "string",
+          "title": "unique uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "feed created at"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "feed updated at"
+        },
+        "name": {
+          "type": "string",
+          "title": "name of the feed (formatted)"
+        },
+        "userName": {
+          "type": "string",
+          "title": "twitter handle name"
+        },
+        "description": {
+          "type": "string",
+          "title": "twitter description (auto pulled), or user defined"
+        },
+        "twitterId": {
+          "type": "string",
+          "title": "twitter user id (str on v2, int64 -\u003e str on v1)"
+        },
+        "icon": {
+          "type": "string",
+          "title": "twitter profile image"
+        },
+        "url": {
+          "type": "string",
+          "title": "feed base url (including trailing slash [/])"
+        },
+        "stream": {
+          "$ref": "#/definitions/mediawatchStream",
+          "title": "stream specific fields"
+        },
+        "meta": {
+          "$ref": "#/definitions/mediawatchFeedMeta",
+          "title": "meta fields"
+        }
+      },
+      "title": "Feed Model"
+    },
+    "mediawatchFeedMeta": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "title": "email (if provvided)"
+        },
+        "businessType": {
+          "$ref": "#/definitions/FeedMetaBusinessType",
+          "title": "as suggested by ioanna archontaki (phd@uoa)\nthe purpose of these meta is to correlate feeds\nby their political context"
+        },
+        "businessOwner": {
+          "type": "string"
+        },
+        "businessRegistered": {
+          "type": "boolean",
+          "description": "if the business is registered or not in a \npublic business registry, association, etc."
+        },
+        "contentType": {
+          "$ref": "#/definitions/FeedMetaContentType"
+        },
+        "politicalStance": {
+          "$ref": "#/definitions/FeedMetaPoliticalStance"
+        },
+        "politicalOrientation": {
+          "$ref": "#/definitions/FeedMetaPoliticalOrientation"
+        },
+        "country": {
+          "type": "string"
+        },
+        "locality": {
+          "$ref": "#/definitions/FeedMetaLocality"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/definitions/FeedMetaTier"
+        }
+      },
+      "title": "FeedMeta Model"
+    },
+    "mediawatchFeedtList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mediawatchFeed"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/mediawatchPagination"
+        }
+      },
+      "title": "FeedList Model"
+    },
+    "mediawatchPagination": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pages": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "mediawatchResponseWithMessage": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "method": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "mediawatchStatus": {
+      "type": "string",
+      "enum": [
+        "STATUS_UNKNOWN",
+        "STATUS_PENDING",
+        "STATUS_ACTIVE",
+        "STATUS_SUSPENDED",
+        "STATUS_CLOSED",
+        "STATUS_DELETED"
+      ],
+      "default": "STATUS_UNKNOWN"
+    },
+    "mediawatchStream": {
+      "type": "object",
+      "properties": {
+        "streamTarget": {
+          "type": "string",
+          "title": "stream key to select"
+        },
+        "executeEvery": {
+          "type": "string"
+        },
+        "streamType": {
+          "$ref": "#/definitions/StreamStreamType",
+          "title": "stream type, can be other, twitter or rss\ncurrently only twitter is supported"
+        },
+        "streamStatus": {
+          "$ref": "#/definitions/mediawatchStatus",
+          "title": "common status (see common.proto)"
+        }
+      },
+      "title": "Stream Model"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "protobufNullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    }
+  }
+}

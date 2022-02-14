@@ -1,12 +1,12 @@
 syntax = "proto3";
 
 package classification;
-option go_package = "github.com/cvcio/proto/cvcio/classification";
+option go_package = "github.com/cvcio/proto/internal/classification";
 
 import "google/api/annotations.proto";
 
-import "cvcio/common/meta.proto";
-import "cvcio/common/predictions.proto";
+import "proto/cvcio/classification/meta.proto";
+import "proto/cvcio/classification/predictions.proto";
 
 message Comment {
     string text = 1;
@@ -19,6 +19,7 @@ message CommentList {
 
 message ResponseToxic {
     repeated common.Prediction predictions = 1;
+    common.Meta meta = 2;
 }
 
 message ResponseToxicList {

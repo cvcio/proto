@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package ministry;
+// option go_package = "github.com/cvcio/proto/internal/ministry;ministry";
+
+import "tagger/tagger.proto";
+
+// Resource collections holds information about which resources a signle user can access.
+// These resources are predefined by administrators and can be assign on each user respectively. 
+message Resource {
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\"" ];
+    string name = 2;
+    string slug = 3;
+}

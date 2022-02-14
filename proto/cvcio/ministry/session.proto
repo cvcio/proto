@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ministry;
+// option go_package = "github.com/cvcio/proto/internal/ministry;ministry";
+
+import "tagger/tagger.proto";
+
+message Session {
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""];
+    string account_id = 2;
+    string agent = 3;
+    string ip = 4;
+}

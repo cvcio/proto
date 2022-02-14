@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package ministry;
+// option go_package = "github.com/cvcio/proto/internal/ministry;ministry";
+
+import "google/api/annotations.proto";
+// import "google/protobuf/wrappers.proto";
+import "tagger/tagger.proto";
+
+message Credentials {
+    string email = 1;
+}
+
+message Verification {
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""];
+    string pin = 2;
+    string nonce = 3;
+}
+
+message Token {
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\"" ];
+    string access_token = 2;
+    string refesh_token = 3;
+    string nonce = 4;
+}
+
+service AuthService {
+    rpc Login (Credentials) returns (Token) {
+        option (google.api.http) = {
+            post : "/v3/auth"
+            body : "*"
+        };
+    };
+    rpc Verify (Verification) returns (Token) {
+        option (google.api.http) = {
+            post : "/v3/auth/verify/{id}"
+            body : "*"
+        };
+    };
+    rpc Authorize (Credentials) returns (Token) {
+        option (google.api.http) = {
+            post : "/v3/auth/authorize"
+            body : "*"
+        };
+    };
+    rpc RefreshToken (Token) returns (Token) {
+        option (google.api.http) = {
+            post : "/v3/auth/token"
+            body : "*"
+        };
+    };
+}

@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package ministry;
+option go_package = "github.com/cvcio/mediawatch/internal/ministry";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "tagger/tagger.proto";
+import "ministry/auth.proto";
+import "ministry/common.proto";
+import "transformer/annotations.proto";
+
+enum Status {
+    STATUS_UNKNOWN= 0;
+    STATUS_PENDING = 1;
+    STATUS_ACTIVE = 2;
+    STATUS_SUSPENDED = 3;
+    STATUS_CLOSED = 4;
+}
+
+enum Role {
+    ROLE_UNKNOWN = 0;
+    ROLE_USER = 1;
+    ROLE_POWERUSER = 2;
+    ROLE_ORGADMIN = 3;
+    ROLE_MANAGER = 4;
+    ROLE_ADMIN = 5;
+    ROLE_MASTER = 6;
+}
+
+message Account {
+    option (transformer.go_struct) = "AccountModel";
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\"" ];
+    
+    google.protobuf.Timestamp created_at = 2 [(tagger.tags) = "bson:\"created_at,omitempty\"" ];
+    google.protobuf.Timestamp updated_at = 3 [(tagger.tags) = "bson:\"updated_at,omitempty\"" ];
+    google.protobuf.Timestamp last_login_at = 4 [(tagger.tags) = "bson:\"last_login_at,omitempty\"" ];
+
+    bool deleted = 5;
+    string nonce = 6;
+    
+    Status status = 7;
+
+    string first_name = 8 [(tagger.tags) = "bson:\"first_name,omitempty\"" ];
+    string last_name = 9 [(tagger.tags) = "bson:\"last_name,omitempty\"" ];
+    string screen_name = 10 [(tagger.tags) = "bson:\"screen_name,omitempty\"" ];
+    string country = 11;
+    string language = 12;
+    string mobile = 13;
+    string industry = 14;
+    string occupation = 15;
+    string avatar = 16;
+
+    bool accept_terms = 17 [(tagger.tags) = "bson:\"accept_terms,omitempty\"" ];
+    
+    string pin = 18;
+    bool fa2 = 19;
+
+    string organization = 20;
+
+    Role role = 21;
+    string email = 22;
+    bytes hash = 23 [(tagger.tags) = "json:\"-\"" ];
+
+    string source = 24;
+    string authorizer = 25;
+}
+
+message AccountWithFields {
+    string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\"" ];
+    google.protobuf.Struct meta = 2;
+}
+
+message QueryAccount {
+    string id = 1;
+    int64 limit = 2;
+    int64 page = 3;
+}
+
+message AccountList {
+    repeated Account data = 1;
+    Pagination pagination = 2;
+};
+
+service AccountService {
+    rpc Create (Credentials) returns (Account) {
+        option (google.api.http) = {
+            post : "/v3/accounts/create"
+            body : "*"
+        };
+    };
+    rpc Get (QueryAccount) returns (Account) {
+        option (google.api.http) = {
+            get : "/v3/accounts/get/{id}"
+        };
+    };
+    rpc List (QueryAccount) returns (AccountList) {
+        option (google.api.http) = {
+            get : "/v3/accounts/list"
+        };
+    };
+    rpc Update (Account) returns (ResponseWithMessage) {
+        option (google.api.http) = {
+            put : "/v3/accounts/update/{id}"
+            body : "*"
+        };
+    };
+    rpc UpdateWithFields (AccountWithFields) returns (ResponseWithMessage) {
+        option (google.api.http) = {
+            put : "/v3/accounts/update-with-fields/{id}"
+            body : "*"
+        };
+    };
+    rpc Delete (Account) returns (ResponseWithMessage) {
+        option (google.api.http) = {
+            delete : "/v3/accounts/delete/{id}"
+        };
+    };
+    rpc Verify (Account) returns (ResponseWithMessage) {
+        option (google.api.http) = {
+            put : "/v3/accounts/verify/{id}"
+            body : "*"
+        };
+    };
+    rpc Reset (Account) returns (ResponseWithMessage) {
+        option (google.api.http) = {
+            put : "/v3/accounts/reset/{id}"
+            body : "*"
+        };
+    };
+}
