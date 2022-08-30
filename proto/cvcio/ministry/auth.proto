@@ -7,6 +7,9 @@ import "google/api/annotations.proto";
 // import "google/protobuf/wrappers.proto";
 import "tagger/tagger.proto";
 
+import "proto/cvcio/ministry/session.proto";
+// import "proto/cvcio/commons/common.proto";
+
 message Credentials {
     string email = 1;
 }
@@ -14,38 +17,60 @@ message Credentials {
 message Verification {
     string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""];
     string pin = 2;
-    string nonce = 3;
 }
 
 message Token {
     string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\"" ];
     string access_token = 2;
     string refesh_token = 3;
-    string nonce = 4;
 }
 
 service AuthService {
-    rpc Login (Credentials) returns (Token) {
+    // authenticate user with magick link
+    rpc Authenticate (Credentials) returns (Session) {
         option (google.api.http) = {
-            post : "/v3/auth"
+            post : "/v3/auth/authenticate"
             body : "*"
         };
     };
+    // invite user with magick link
+    rpc InviteWithMagic (Credentials) returns (commons.ResponseSuccess) {
+        option (google.api.http) = {
+            post : "/v3/auth/invite-with-magick"
+            body : "*"
+        };
+    };
+    // get the otpauth link and qr-code
+    rpc GetVerificationLink (Verification) returns (Session) {
+        option (google.api.http) = {
+            get : "/v3/auth/verify/{id}"
+        };
+    };
+    // verify user with a predefined 2fa method
     rpc Verify (Verification) returns (Token) {
         option (google.api.http) = {
             post : "/v3/auth/verify/{id}"
             body : "*"
         };
     };
+    // authorize user with an external service such as google
     rpc Authorize (Credentials) returns (Token) {
         option (google.api.http) = {
             post : "/v3/auth/authorize"
             body : "*"
         };
     };
-    rpc RefreshToken (Token) returns (Token) {
+    // generate token
+    rpc GenerateToken (Token) returns (Token) {
         option (google.api.http) = {
             post : "/v3/auth/token"
+            body : "*"
+        };
+    };
+    // refresh token
+    rpc RefreshToken (Token) returns (Token) {
+        option (google.api.http) = {
+            post : "/v3/auth/token/refresh"
             body : "*"
         };
     };

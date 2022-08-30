@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package proto.cvcio.mediawatch.v3.articles;
+// option go_package = "github.com/cvcio/mediawatch/internal/proto/v3/articles;articles";
+
+// third party imports
+import "google/protobuf/timestamp.proto";
+// mediawatch specific imports
+// import "proto/cvcio/mediawatch/v3/commons/common.proto";
+
+// Articles ...
+//
+// ...
+
+// Article Model
+message Article {
+    string uuid = 1;
+    string lang = 2;
+    google.protobuf.Timestamp crawled_at = 3;
+    string source = 4;
+    string url = 5;
+    string tweet_id = 6;
+
+}
+// ArticleStopWords Model 
+message ArticleStopWords {
+    string uuid = 1;
+    string doc_uuid = 2;
+    repeated string tokens = 3;
+}
+
+// ArticleStopWords Model 
+message ArticleContent {
+    string title = 1;
+    string excerpt = 2;
+    string body = 3;
+    repeated string authors = 4;
+    repeated string sources = 5;
+    repeated string tags = 6;
+    repeated string categories = 7;
+    google.protobuf.Timestamp published_at = 8;
+    google.protobuf.Timestamp edited_at = 9;
+}
+
+message ArticleRequest {
+    Article payload = 1;
+}
+
+message ArticleResponseSingle {
+    Article result = 1;
+}
+
+message ArticleResponseList {
+    repeated Article results = 1;
+    // commons.Pagination pagination = 2;
+}
+
+
+// ArticleService Definition
+//
+// ...
+service ArticleService {
+    // Retrieve article by uuid
+    rpc Retrieve (ArticleRequest) returns (ArticleResponseSingle) {};
+
+    // List articles by query
+    rpc List (ArticleRequest) returns (ArticleResponseList) {};
+
+    // Stream articles by query
+    rpc Stream(ArticleRequest) returns (stream ArticleResponseSingle) {};
+
+    // Aggregate articles by query
+    rpc Aggregate (ArticleRequest) returns (ArticleResponseList) {};
+
+    // Topics
+    rpc GetTopics (ArticleRequest) returns (ArticleResponseList) {};
+    
+    // Categories
+    rpc GetCategories (ArticleRequest) returns (ArticleResponseList) {};
+    
+    // Authors
+    rpc GetAuthors (ArticleRequest) returns (ArticleResponseList) { };
+
+    // Sources
+    rpc GetSources (ArticleRequest) returns (ArticleResponseList) {};
+}

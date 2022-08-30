@@ -1,7 +1,7 @@
 REGISTRY=reg.cvcio.org
 REPO=github.com/cvcio/proto
 
-BUF_VERSION:=1.0.0-rc6
+BUF_VERSION:=1.7.0
 
 generate:
 	buf generate

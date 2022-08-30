@@ -14,7 +14,7 @@ import "tagger/tagger.proto";
 // import "proto/cvcio/ministry/auth.proto";
 import "proto/cvcio/ministry/resource.proto";
 import "proto/cvcio/ministry/session.proto";
-import "proto/cvcio/commons/common.proto";
+// import "proto/cvcio/commons/common.proto";
 
 enum Role {
     // users with unassigned role

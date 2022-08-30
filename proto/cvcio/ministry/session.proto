@@ -2,12 +2,25 @@ syntax = "proto3";
 
 package ministry;
 // option go_package = "github.com/cvcio/proto/internal/ministry;ministry";
-
+import "google/protobuf/timestamp.proto";
 import "tagger/tagger.proto";
 
 message Session {
     string id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""];
-    string account_id = 2;
-    string agent = 3;
-    string ip = 4;
+    // creation datetime in RFC3339 format
+    google.protobuf.Timestamp created_at = 2 [(tagger.tags) = "bson:\"created_at,omitempty\""];
+    // update datetime in RFC3339 format
+    google.protobuf.Timestamp expires_at = 3 [(tagger.tags) = "bson:\"expires_at,omitempty\""];
+    // key to check against
+    string key = 4;
+    // assign value
+    string value = 5;
+    // assign message
+    string message = 6;
+    // client's agent
+    string agent = 7 [(tagger.tags) = "json:\"-\""];
+    // client's ip
+    string ip = 8 [(tagger.tags) = "json:\"-\""];
+    // one time password
+    string otp = 9 [(tagger.tags) = "bson:\"otp,omitempty\""];
 }

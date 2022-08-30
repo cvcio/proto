@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package classification;
+package proto.rtaa.classification.common.v1;
 
 message Prediction {
     string label = 1;

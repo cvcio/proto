@@ -6,19 +6,8 @@ managed:
     default: github.com/cvcio/mediawatch/internal
     except:
       - buf.build/googleapis/googleapis
+      - buf.build/grpc-ecosystem/grpc-gateway
+      - buf.build/srikrsna/protoc-gen-gotag
 plugins:
-  - name: go
-    out: internal
-    opt: paths=source_relative
-  - name: go-grpc
-    out: internal
-    opt:
-      - paths=source_relative
-      - require_unimplemented_servers=false
-  - name: grpc-gateway
-    out: internal
-    opt:
-      - paths=source_relative
-      - generate_unbound_methods=true
   - name: openapiv2
     out: swagger

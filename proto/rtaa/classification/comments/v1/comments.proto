@@ -1,16 +1,17 @@
 syntax = "proto3";
 
-package classification;
-// option go_package = "github.com/cvcio/proto/internal/classification";
+package proto.rtaa.classification.comments.v1;
 
+// third-party imports
 import "google/api/annotations.proto";
 
-import "proto/cvcio/classification/meta.proto";
-import "proto/cvcio/classification/predictions.proto";
+// rtaa-72 imports
+import "proto/rtaa/classification/common/v1/meta.proto";
+import "proto/rtaa/classification/common/v1/predictions.proto";
 
 message Comment {
     string text = 1;
-    classification.Meta meta = 2;
+    proto.rtaa.classification.common.v1.Meta meta = 2;
 }
 
 message CommentList {
@@ -18,8 +19,8 @@ message CommentList {
 }
 
 message ResponseToxic {
-    repeated classification.Prediction predictions = 1;
-    classification.Meta meta = 2;
+    repeated proto.rtaa.classification.common.v1.Prediction predictions = 1;
+    proto.rtaa.classification.common.v1.Meta meta = 2;
 }
 
 message ResponseToxicList {

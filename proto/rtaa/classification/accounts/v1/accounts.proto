@@ -1,26 +1,15 @@
 syntax = "proto3";
 
-package classification;
+package proto.rtaa.classification.accounts.v1;
 
-// golang options
-// option go_package = "github.com/cvcio/proto/internal/classification";
-
+// third-party imports
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
-import "proto/cvcio/classification/meta.proto";
-import "proto/cvcio/classification/predictions.proto";
+// rtaa-72 imports
+import "proto/rtaa/classification/common/v1/meta.proto";
+import "proto/rtaa/classification/common/v1/predictions.proto";
 
-/**
-TwitterAccount message holds information of the requested account
-Required Fields
-    - followers (int64) as provided by Twitter API
-    - friends (int64) as provided by Twitter API
-    - statuses (int64) as provided by Twitter API
-    - lists (int64) as provided by Twitter API
-    - favorites (int64) as provided by Twitter API
-    - dates_since (float64) created date (as provided by Twitter API) - observed date (now)
-**/
 message TwitterAccount {
     int64 followers = 1;
     int64 following = 2;
@@ -33,7 +22,7 @@ message TwitterAccount {
 
     google.protobuf.Timestamp created_at = 8;
 
-    classification.Meta meta = 9;
+    proto.rtaa.classification.common.v1.Meta meta = 9;
 }
 // TwitterAccountList, a list of TwitterAccount messages {accounts: [...]}
 message TwitterAccountList {
@@ -41,7 +30,7 @@ message TwitterAccountList {
 }
 // ResponseAccount
 message ResponseAccount {
-    repeated classification.Prediction predictions = 1;
+    repeated proto.rtaa.classification.common.v1.Prediction predictions = 1;
 }
 // ResponseAccountList, a list of ResponseAccount messages {accounts: [...]}
 message ResponseAccountList {
@@ -54,7 +43,7 @@ service AccountService {
     // returns a ResponseAccount message
     rpc ClassifyTwitterAccount (TwitterAccount) returns (ResponseAccount) {
         option (google.api.http) = {
-            post : "/v3/classify/account/twitter"
+            post : "/v1/classify/account/twitter"
             body : "*"
         };
     };
@@ -62,7 +51,7 @@ service AccountService {
     // returns a list of ResponseAccount messages (ResponseAccountList)
     rpc ClassifyTwitterAccounts (TwitterAccountList) returns (ResponseAccountList) {
         option (google.api.http) = {
-            post : "/v3/classify/accounts/twitter"
+            post : "/v1/classify/accounts/twitter"
             body : "*"
         };
     };

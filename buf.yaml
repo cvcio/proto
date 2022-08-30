@@ -1,8 +1,9 @@
 version: v1
-name: buf.build/andefined/protos
+name: buf.build/cvcio/protos
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway
+  - buf.build/srikrsna/protoc-gen-gotag
 lint:
   use:
     - DEFAULT
